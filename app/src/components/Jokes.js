@@ -21,7 +21,7 @@ class Jokes extends React.Component {
     render() {
         return (
             <>
-                <h2>Jokes List</h2>
+                <h2>Some Terribly Wrong Dad Jokes</h2>
                 <ul>
                     {this.state.jokes.map(joke => (
                         <li key={joke.id}>{joke.joke}</li>
