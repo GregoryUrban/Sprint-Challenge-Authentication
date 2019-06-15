@@ -1,6 +1,6 @@
 const axios = require('axios');
 const bcrypt = require("bcryptjs");
-const tokenService = require("../auth/token-service.js");
+const tokenService = require("../auth/tokenGenerator.js");
 
 const Users = require("./routes-model.js");
 
@@ -10,7 +10,25 @@ module.exports = server => {
   server.post('/api/register', register);
   server.post('/api/login', login);
   server.get('/api/jokes', authenticate, getJokes);
+  server.get('/api/logout', logout);
+
+ 
 };
+
+function logout (req, res) {
+  if (req.token) {
+    req.token.destroy((err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Ther was an error loging out'});
+    }
+    res.end();
+  });
+} else {
+  res.end();
+}
+}
+
 
 function register(req, res) {
   // implement user registration
@@ -48,6 +66,10 @@ function login(req, res) {
       res.status(500).json({error, message: '500 failure on logging in'}); // was just (error)
     });
 }
+
+
+
+
 
 function getJokes(req, res) {
   const requestOptions = {
